@@ -16,7 +16,7 @@ export type Cepa = {
   logradouro: string;
   complemento: string;
   bairro: string;
-  localidade: string;
+  cidade: string;
   uf: string;
   ibge: string;
   gia: string;
@@ -28,7 +28,7 @@ export type Cep = {
   logradouro: string;
   complemento: string;
   bairro: string;
-  localidade: string;
+  cidade: string;
   uf: string;
 }
 
