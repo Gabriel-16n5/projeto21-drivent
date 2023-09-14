@@ -30,6 +30,7 @@ export type Cep = {
   bairro: string;
   cidade: string;
   uf: string;
+  message?: string;
 }
 
 // export type cep = {
