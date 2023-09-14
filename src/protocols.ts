@@ -33,6 +33,6 @@ export type Cep = {
   message?: string;
 };
 
-// export type cep = {
-//   cep: number | string | number[] | string[];
+// export type C = {
+//   cep: string;
 // }

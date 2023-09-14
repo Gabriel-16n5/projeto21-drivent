@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 import { invalidDataError } from '../errors';
 import { AuthenticatedRequest } from '@/middlewares';
 import { enrollmentsService } from '@/services';
-// import { cep } from '../protocols';
 
 export async function getEnrollmentByUser(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
