@@ -3,22 +3,20 @@ import { request } from '@/utils/request';
 import { invalidDataError, notFoundError } from '@/errors';
 import { addressRepository, CreateAddressParams, enrollmentRepository, CreateEnrollmentParams } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
-import { Cepa} from '../protocols';
+import { Cep, Cepa} from '../protocols';
 
 // TODO - tirar o tipo any
 async function getAddressFromCEP(cep: any) {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
   if(result.data.erro==="true") throw invalidDataError("cep não encontrado")
-  const cepDone = {
+  const cepDone: Cep = {
     logradouro: result.data.logradouro,
     complemento: result.data.complemento,
     bairro: result.data.bairro,
-    cidade: result.data.cidade,
+    localidade: result.data.localidade,
     uf: result.data.uf,
   };
-  // TODO: Tratar regras de negócio e lanças eventuais erros
 
-  // FIXME: não estamos interessados em todos os campos
   return cepDone;
 }
 

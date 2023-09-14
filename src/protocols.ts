@@ -24,6 +24,14 @@ export type Cepa = {
   siafi: string;
 }
 
+export type Cep = {
+  logradouro: string;
+  complemento: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+}
+
 // export type cep = {
 //   cep: number | string | number[] | string[];
 // }
