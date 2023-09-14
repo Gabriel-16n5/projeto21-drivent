@@ -10,3 +10,20 @@ export type RequestError = {
   name: string;
   message: string;
 };
+
+export type Cepa = {
+  cep: string;
+  logradouro: string;
+  complemento: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+  ibge: string;
+  gia: string;
+  ddd: string;
+  siafi: string;
+}
+
+// export type cep = {
+//   cep: number | string | number[] | string[];
+// }
