@@ -22,7 +22,7 @@ export type Cepa = {
   gia: string;
   ddd: string;
   siafi: string;
-}
+};
 
 export type Cep = {
   logradouro: string;
@@ -31,7 +31,7 @@ export type Cep = {
   cidade: string;
   uf: string;
   message?: string;
-}
+};
 
 // export type cep = {
 //   cep: number | string | number[] | string[];

@@ -1,14 +1,14 @@
 import { Address, Enrollment } from '@prisma/client';
+import { Cep } from '../protocols';
 import { request } from '@/utils/request';
-import { invalidDataError, notFoundError } from '@/errors';
+import { invalidDataError } from '@/errors';
 import { addressRepository, CreateAddressParams, enrollmentRepository, CreateEnrollmentParams } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
-import { Cep, Cepa} from '../protocols';
 
 // TODO - tirar o tipo any
 async function getAddressFromCEP(cep: any) {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
-  if(result.data.erro==="true") throw invalidDataError("cep não encontrado")
+  if (result.data.erro === 'true') throw invalidDataError('cep não encontrado');
   const cepDone: Cep = {
     logradouro: result.data.logradouro,
     complemento: result.data.complemento,
@@ -23,7 +23,7 @@ async function getAddressFromCEP(cep: any) {
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
   const enrollmentWithAddress = await enrollmentRepository.findWithAddressByUserId(userId);
 
-  if (!enrollmentWithAddress) throw invalidDataError("id inválido");
+  if (!enrollmentWithAddress) throw invalidDataError('id inválido');
 
   const [firstAddress] = enrollmentWithAddress.Address;
   const address = getFirstAddress(firstAddress);
@@ -45,7 +45,7 @@ function getFirstAddress(firstAddress: Address): GetAddressResult {
 type GetAddressResult = Omit<Address, 'createdAt' | 'updatedAt' | 'enrollmentId'>;
 
 async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollmentWithAddress) {
-  console.log(params)
+  console.log(params);
   const enrollment = exclude(params, 'address');
   enrollment.birthday = new Date(enrollment.birthday);
   const address = getAddressForUpsert(params.address);
