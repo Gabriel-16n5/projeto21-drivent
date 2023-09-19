@@ -33,6 +33,6 @@ export type Cep = {
   message?: string;
 };
 
-// export type C = {
-//   cep: string;
-// }
+export type C = {
+  cep: string;
+}

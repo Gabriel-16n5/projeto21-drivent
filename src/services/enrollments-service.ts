@@ -5,8 +5,7 @@ import { invalidDataError } from '@/errors';
 import { addressRepository, CreateAddressParams, enrollmentRepository, CreateEnrollmentParams } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
 
-// TODO - tirar o tipo any
-async function getAddressFromCEP(cep: any) {
+async function getAddressFromCEP(cep: string) {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
   if (result.data.erro === 'true') throw invalidDataError('cep não encontrado');
   const cepDone: Cep = {
