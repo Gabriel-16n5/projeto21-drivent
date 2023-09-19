@@ -1,28 +1,33 @@
 import { Address, Enrollment } from '@prisma/client';
-import { Cep } from '../protocols';
 import { request } from '@/utils/request';
-import { invalidDataError } from '@/errors';
+import { invalidCepError } from '@/errors';
 import { addressRepository, CreateAddressParams, enrollmentRepository, CreateEnrollmentParams } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
+import { AddressEnrollment } from '@/protocols';
 
-async function getAddressFromCEP(cep: string) {
+async function getAddressFromCEP(cep: string): Promise<AddressEnrollment> {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
-  if (result.data.erro === 'true') throw invalidDataError('cep não encontrado');
-  const cepDone: Cep = {
-    logradouro: result.data.logradouro,
-    complemento: result.data.complemento,
-    bairro: result.data.bairro,
-    cidade: result.data.localidade,
-    uf: result.data.uf,
+
+  if (!result.data || result.data.erro) {
+    throw invalidCepError();
+  }
+
+  const { bairro, localidade, uf, complemento, logradouro } = result.data;
+  const address: AddressEnrollment = {
+    bairro,
+    cidade: localidade,
+    uf,
+    complemento,
+    logradouro,
   };
 
-  return cepDone;
+  return address;
 }
 
 async function getOneWithAddressByUserId(userId: number): Promise<GetOneWithAddressByUserIdResult> {
   const enrollmentWithAddress = await enrollmentRepository.findWithAddressByUserId(userId);
 
-  if (!enrollmentWithAddress) throw invalidDataError('id inválido');
+  if (!enrollmentWithAddress) throw invalidCepError();
 
   const [firstAddress] = enrollmentWithAddress.Address;
   const address = getFirstAddress(firstAddress);
@@ -48,6 +53,8 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
   const enrollment = exclude(params, 'address');
   enrollment.birthday = new Date(enrollment.birthday);
   const address = getAddressForUpsert(params.address);
+
+  await getAddressFromCEP(address.cep);
 
   const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, 'userId'));
 
