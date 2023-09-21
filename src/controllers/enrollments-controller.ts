@@ -7,7 +7,7 @@ import { CEP } from '@/protocols';
 
 export async function getEnrollmentByUser(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-
+  console.log(userId)
   const enrollmentWithAddress = await enrollmentsService.getOneWithAddressByUserId(userId);
 
   return res.status(httpStatus.OK).send(enrollmentWithAddress);

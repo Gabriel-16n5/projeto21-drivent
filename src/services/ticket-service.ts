@@ -1,7 +1,7 @@
 import { ticketRepository } from "../repositories/ticket-repository";
 
-async function getTicket(){
-    const result = await ticketRepository.getTicket();
+async function getTicket(userId: any){
+    const result = await ticketRepository.getTicket(userId);
     return result
 }
 
