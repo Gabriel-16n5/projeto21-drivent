@@ -9,6 +9,12 @@ async function getTicket(userId: any){
     return result
 }
 
+async function getTicketTypes(){
+    const tt = await ticketRepository.getTicketTypes();
+    return tt;
+}
+
 export const ticketService = {
-    getTicket
+    getTicket,
+    getTicketTypes
 }

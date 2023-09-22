@@ -9,6 +9,12 @@ async function getTicket(userId:any){
     return result
 }
 
+async function getTicketTypes(){
+    const result = await prisma.ticketType.findMany();
+    return result
+}
+
 export const ticketRepository = {
-    getTicket
+    getTicket,
+    getTicketTypes
 }
