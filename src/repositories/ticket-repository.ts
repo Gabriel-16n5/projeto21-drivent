@@ -14,7 +14,6 @@ async function getTicket(userId:any){
             enrollmentId:enrollmentData.id
         }
     })
-    console.log(ticketData, "sapo")
     if(ticketData === null) throw notFoundError();
     const ticketTypeData = await prisma.ticketType.findUnique({
         where:{
@@ -43,12 +42,42 @@ async function getTicketTypes(){
 
 async function createTicket(userId:any, ticketTypeId:any){
 
-    // const createTicket = prisma.ticket.create({
-    //     data:{
+    const enrollmentData = await prisma.enrollment.findUnique({
+        where: {
+            userId
+        }
+    });
+    if(!enrollmentData) throw notFoundError();
 
-    //     }
-    // })
-    return "sapo"
+    const ticketTypeData = await prisma.ticketType.findUnique({
+        where:{
+            id:ticketTypeId
+        }
+    })
+    if(!ticketTypeData) throw notFoundError();
+
+
+    const createTicket = await prisma.ticket.create({
+        data:{
+            ticketTypeId,
+            enrollmentId: enrollmentData.id,
+            status: "RESERVED",
+        }
+    })
+    if(!createTicket) throw notFoundError();
+    // const result = {
+    //     id: ticketData.id,
+    //     status: ticketData.status,
+    //     ticketTypeId: ticketData.ticketTypeId,
+    //     enrollmentId: ticketData.enrollmentId,
+    //     TicketType: ticketTypeData,
+    //     createdAt: ticketData.createdAt,
+    //     updatedAt: ticketData.updatedAt,
+    //   }
+
+    const result = await getTicket(userId);
+
+    return result
 }
 
 export const ticketRepository = {

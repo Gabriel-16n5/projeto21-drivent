@@ -23,5 +23,5 @@ export async function createTicket(req: AuthenticatedRequest, res: Response){
     console.log(ticketTypeId)
     console.log(userId)
     const result = await ticketRepository.createTicket(userId, ticketTypeId)
-    res.status(httpStatus.OK).send(result)
+    res.status(httpStatus.CREATED).send(result)
 }
