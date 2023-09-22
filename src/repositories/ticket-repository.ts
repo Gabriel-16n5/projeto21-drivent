@@ -1,4 +1,5 @@
 import { prisma } from '@/config';
+import { notFoundError } from '../errors';
 
 async function getTicket(userId:any){
     const enrollmentData = await prisma.enrollment.findUnique({
@@ -6,18 +7,19 @@ async function getTicket(userId:any){
             userId
         }
     });
-
+    if(!enrollmentData) throw notFoundError();
     const ticketData = await prisma.ticket.findUnique({
         where: {
             id:enrollmentData.id
         }
     })
-    
+    if(!ticketData) throw notFoundError();
     const ticketTypeData = await prisma.ticketType.findUnique({
         where:{
             id:ticketData.ticketTypeId
         }
     })
+    if(!ticketTypeData) throw notFoundError();
 
     const result = {
         id: ticketData.id,
