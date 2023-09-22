@@ -41,7 +41,18 @@ async function getTicketTypes(){
     return result
 }
 
+async function createTicket(userId:any, ticketTypeId:any){
+
+    // const createTicket = prisma.ticket.create({
+    //     data:{
+
+    //     }
+    // })
+    return "sapo"
+}
+
 export const ticketRepository = {
     getTicket,
-    getTicketTypes
+    getTicketTypes,
+    createTicket
 }

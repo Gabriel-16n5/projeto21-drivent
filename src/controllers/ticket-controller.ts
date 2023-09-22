@@ -16,3 +16,12 @@ export async function getTicketTypes(req: AuthenticatedRequest,  res: Response){
 
     res.status(httpStatus.OK).send(tt)
 }
+
+export async function createTicket(req: AuthenticatedRequest, res: Response){
+    const {ticketTypeId} = req.body;
+    const { userId } = req;
+    console.log(ticketTypeId)
+    console.log(userId)
+    const result = await ticketRepository.createTicket(userId, ticketTypeId)
+    res.status(httpStatus.OK).send(result)
+}

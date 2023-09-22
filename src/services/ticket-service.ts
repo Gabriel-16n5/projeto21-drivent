@@ -16,7 +16,13 @@ async function getTicketTypes(){
     return tt;
 }
 
+async function createTicket(userId:any, ticketTypeId:any){
+    const result = await ticketRepository.createTicket(userId, ticketTypeId)
+    return result
+}
+
 export const ticketService = {
     getTicket,
-    getTicketTypes
+    getTicketTypes,
+    createTicket
 }
