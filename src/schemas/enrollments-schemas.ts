@@ -5,7 +5,6 @@ import { CreateOrUpdateEnrollmentWithAddress } from '@/services';
 const cpfValidationSchema = Joi.string().length(11).custom(joiCpfValidation).required();
 
 const cepValidationSchema = Joi.string().length(9).custom(joiCepValidation).required();
-// const mobilePhoneValidationSchema = Joi.string().required();
 const mobilePhoneValidationSchema = Joi.string().min(14).max(15).custom(joiMobilePhoneValidation).required();
 
 export const createOrUpdateEnrollmentSchema = Joi.object<CreateOrUpdateEnrollmentWithAddress>({
