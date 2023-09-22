@@ -6,6 +6,7 @@ async function getTicket(userId: any){
     const user = await enrollmentRepository.findWithAddressByUserId(userId)
     if(user === null) throw notFoundError();
     const result = await ticketRepository.getTicket(userId);
+    if(result.id === null) throw notFoundError();
     return result
 }
 
