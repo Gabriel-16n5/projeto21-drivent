@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import 'express-async-errors';
 import express, { Express } from 'express';
 import cors from 'cors';
+import { ticketRouter } from './routers/ticket-router';
 import { handleApplicationErrors } from '@/middlewares';
 import { usersRouter, authenticationRouter, eventsRouter, enrollmentsRouter, paymentRouter } from '@/routers';
 import { loadEnv, connectDb, disconnectDB } from '@/config';
-import { ticketRouter } from './routers/ticket-router';
 
 loadEnv();
 

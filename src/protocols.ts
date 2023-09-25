@@ -27,6 +27,6 @@ export type CEP = {
   cep: string;
 };
 
-export type TicketId = { 
-  ticketId:number | null
-}
+export type TicketId = {
+  ticketId: number | null;
+};
