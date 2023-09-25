@@ -1,7 +1,7 @@
 import { prisma } from '@/config';
 import { conflictError, notFoundError } from '../errors';
 
-async function getTicket(userId:any){
+async function getTicket(userId:number){
     const enrollmentData = await prisma.enrollment.findUnique({
         where: {
             userId
@@ -40,7 +40,7 @@ async function getTicketTypes(){
     return result
 }
 
-async function createTicket(userId:any, ticketTypeId:any){
+async function createTicket(userId:number, ticketTypeId:number){
 
     const enrollmentData = await prisma.enrollment.findUnique({
         where: {

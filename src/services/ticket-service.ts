@@ -2,7 +2,7 @@ import { ticketRepository } from "../repositories/ticket-repository";
 import { enrollmentRepository } from "../repositories";
 import { notFoundError, conflictError } from "../errors";
 
-async function getTicket(userId: any){
+async function getTicket(userId: number){
     if(!userId) throw notFoundError();
     const user = await enrollmentRepository.findWithAddressByUserId(userId)
     if(user === null) throw notFoundError();
@@ -16,7 +16,7 @@ async function getTicketTypes(){
     return tt;
 }
 
-async function createTicket(userId:any, ticketTypeId:any){
+async function createTicket(userId:number, ticketTypeId:number){
     const result = await ticketRepository.createTicket(userId, ticketTypeId)
     return result
 }
