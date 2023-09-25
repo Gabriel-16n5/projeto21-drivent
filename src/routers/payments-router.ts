@@ -6,6 +6,6 @@ const paymentRouter = Router();
 
 paymentRouter
 .all('/*', authenticateToken)
-.get('/', getPayment)
+.get('/ticketId?', getPayment)
 
 export {paymentRouter}
