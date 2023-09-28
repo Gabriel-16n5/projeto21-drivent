@@ -1,13 +1,25 @@
-import { conflictError, notFoundError } from '../errors';
 import { prisma } from '@/config';
+import { PaymentParams } from '@/protocols';
 
-async function getPayment(ticketId: number) {
-  const result = await prisma.payment.findUnique({
+async function findPaymentByTicketId(ticketId: number) {
+  const result = await prisma.payment.findFirst({
     where: { ticketId },
   });
   return result;
 }
 
-export const paymentRepository = {
-  getPayment,
+async function createPayment(ticketId: number, params: PaymentParams) {
+  const result = await prisma.payment.create({
+    data: {
+      ticketId,
+      ...params,
+    },
+  });
+
+  return result;
+}
+
+export const paymentsRepository = {
+  findPaymentByTicketId,
+  createPayment,
 };
