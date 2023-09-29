@@ -5,6 +5,12 @@ async function getHotels(){
     return result;
 }
 
+async function getRooms(hotelIdInt:number){
+    const result = await hotelsRepository.getRooms(hotelIdInt);
+    return result;
+}
+
 export const hotelsService = {
-    getHotels
+    getHotels,
+    getRooms
 }
