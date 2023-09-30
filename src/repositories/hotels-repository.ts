@@ -18,13 +18,25 @@ async function getHotels(userId:number){
 
 async function getRooms(hotelIdInt:number, userId:number){
     const validat = await getHotels(userId);
-
-    const result = await prisma.room.findMany({
+    const hotel = await prisma.hotel.findUnique({
+        where:{
+            id: hotelIdInt
+        }
+    })
+    const rooms = await prisma.room.findMany({
         where:{
             hotelId: hotelIdInt
         }
     });
-    if(result.length === 0) throw notFoundError();
+    if(rooms.length === 0) throw notFoundError();
+    const result = {
+        id: hotel.id,
+        name: hotel.name,
+        image: hotel.image,
+        createAt: hotel.createdAt,
+        updateAt: hotel.updatedAt,
+        rooms
+    }
     return result;
 }
 
