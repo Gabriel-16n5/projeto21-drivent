@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import httpStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import supertest from 'supertest';
-import { createHotel2, createTicket2, createTicketType2 } from '../factories/hotels-factory';
+import { createBookingRoom2, createHotel2, createRoom2, createTicket2, createTicketType2 } from '../factories/hotels-factory';
 import { createEnrollmentWithAddress, createTicket, createTicketType, createUser, createhAddressWithCEP } from '../factories';
 import { cleanDb, generateValidToken } from '../helpers';
 import { prisma } from '@/config';
@@ -59,12 +59,35 @@ describe('GET /hotels', () => {
         expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
       });
 
-    // it('should respond with status 400 when body is not valid', async () => {
-    //   const token = await generateValidToken();
-    //   const body = { [faker.lorem.word()]: faker.lorem.word() };
+})
 
-    //   const response = await server.post('/enrollments').set('Authorization', `Bearer ${token}`).send(body);
+describe('GET /hotels/:hotelId', () => {
+    it('GET hotel by id no exists', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+      const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it('GET hotel by id without auth', async () => {
+        const user = await createUser();
+        const token = await generateValidToken(user);
+        const hotel = await createHotel2();
+        const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer sapo`);
+        expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
 
-    //   expect(response.status).toBe(httpStatus.BAD_REQUEST);
-    // })
+    it('GET hotel by id', async () => {
+        const user = await createUser();
+        const enrollment = await createEnrollmentWithAddress(user);
+        const token = await generateValidToken(user);
+        const ticketType = await createTicketType2();
+        const ticket = await createTicket2(enrollment.id, ticketType.id)
+        const hotel = await createHotel2();
+        const room = await createRoom2(hotel.id);
+        const booking = await createBookingRoom2(user.id, room.id)     
+        const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
+        expect(response.status).toBe(httpStatus.OK);
+
+    });
+
 })

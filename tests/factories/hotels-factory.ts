@@ -37,3 +37,24 @@ export async function createTicketType2() {
         }
     });
   }
+
+  export async function createRoom2(hotelId:number) {
+  
+    return prisma.room.create({
+        data:{
+            name: faker.name.firstName(),
+            capacity: faker.datatype.number(),
+            hotelId
+        }
+    });
+  }
+
+  export async function createBookingRoom2(userId:number, roomId:number) {
+  
+    return prisma.booking.create({
+        data:{
+            userId,
+            roomId,
+        }
+    });
+  }
