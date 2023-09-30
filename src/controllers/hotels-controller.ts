@@ -13,7 +13,7 @@ export async function getHotels(req: AuthenticatedRequest, res: Response){
 
 export async function getRooms(req: AuthenticatedRequest, res: Response){
     const { userId } = req;
-    const {hotelId} = req.query as Hotels;
+    const {hotelId} = req.params as Hotels;
     const hotelIdInt = parseInt(hotelId);
     const hotelList = await hotelsService.getRooms(hotelIdInt, userId);
     res.status(httpStatus.OK).send(hotelList);
