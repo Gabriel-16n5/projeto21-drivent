@@ -23,19 +23,19 @@ async function getRooms(hotelIdInt:number, userId:number){
             id: hotelIdInt
         }
     })
-    const rooms = await prisma.room.findMany({
+    const Rooms = await prisma.room.findMany({
         where:{
             hotelId: hotelIdInt
         }
     });
-    if(rooms.length === 0) throw notFoundError();
+    if(Rooms.length === 0) throw notFoundError();
     const result = {
         id: hotel.id,
         name: hotel.name,
         image: hotel.image,
         createdAt: hotel.createdAt,
         updatedAt: hotel.updatedAt,
-        rooms
+        Rooms
     }
     return result;
 }
