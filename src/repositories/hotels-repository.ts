@@ -33,8 +33,8 @@ async function getRooms(hotelIdInt:number, userId:number){
         id: hotel.id,
         name: hotel.name,
         image: hotel.image,
-        createAt: hotel.createdAt,
-        updateAt: hotel.updatedAt,
+        createdAt: hotel.createdAt,
+        updatedAt: hotel.updatedAt,
         rooms
     }
     return result;
