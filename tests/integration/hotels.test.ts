@@ -87,7 +87,29 @@ describe('GET /hotels/:hotelId', () => {
         const booking = await createBookingRoom2(user.id, room.id)     
         const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
         expect(response.status).toBe(httpStatus.OK);
+    });
 
+    it('GET all hotels with auth without enrollment', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const hotel = await createHotel2();
+      const room = await createRoom2(hotel.id);
+      const booking = await createBookingRoom2(user.id, room.id)     
+      const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+
+    it('GET hotels by id with auth with enrollment, invalidated ticket no paid or hotel not included', async () => {
+      const user = await createUser();
+      const enrollment = await createEnrollmentWithAddress(user);
+      const token = await generateValidToken(user);
+      const ticketType = await createTicketType()
+      const ticket = await createTicket(enrollment.id,ticketType.id, "RESERVED")
+      const hotel = await createHotel2();
+      const room = await createRoom2(hotel.id);
+      const booking = await createBookingRoom2(user.id, room.id)     
+      const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
     });
 
 })
