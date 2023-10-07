@@ -6,6 +6,12 @@ async function getUserBooking(userId:number) {
     return result;
 }
 
+async function createUserBooking(userId:number, roomId:number) {
+    const result = bookingRepository.createUserBooking(userId, roomId);
+    return result;
+}
+
 export const bookingService = {
-    getUserBooking
+    getUserBooking,
+    createUserBooking
 }

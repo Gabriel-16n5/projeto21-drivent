@@ -17,6 +17,10 @@ export type ViaCEPAddressError = {
   error: boolean;
 };
 
+export type RoomId = {
+  roomId: number
+}
+
 export type AddressEnrollment = {
   logradouro: string;
   complemento: string;
