@@ -21,6 +21,10 @@ export type RoomId = {
   roomId: number
 }
 
+export type BookingId = {
+  bookingId: number
+}
+
 export type AddressEnrollment = {
   logradouro: string;
   complemento: string;
