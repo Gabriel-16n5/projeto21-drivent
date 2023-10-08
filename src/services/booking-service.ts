@@ -13,7 +13,7 @@ async function createUserBooking(userId:number, roomId:number) {
     const result = await bookingRepository.createUserBooking(userId, roomId);
     if(result === "quarto não existe") throw notFoundError()
     if(result === "sem vaga") throw forbiddenError(result)
-    if(result !== "reserva feita") throw forbiddenError(result);
+    if(!result) throw forbiddenError("erro inesperado");
     return result;
 }
 
@@ -22,7 +22,7 @@ async function editBooking(userId:number, roomId:number, bookingId:number){
     if(result === "usuário não possui reserva") throw forbiddenError(result)
     if(result === "quarto não existe") throw notFoundError()
     if(result === "sem vaga") throw forbiddenError(result)
-    if(result !== "booking editado") throw forbiddenError("erro inesperado")
+    if(!result) throw forbiddenError("erro inesperado")
     return result
 }
 

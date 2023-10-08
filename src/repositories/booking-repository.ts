@@ -2,11 +2,21 @@ import { prisma } from "../config";
 
 
 async function getUserBooking(userId:number){
-    return prisma.booking.findFirst({
+    const booking = await prisma.booking.findFirst({
         where:{
             userId
         }
     });
+    const room = await prisma.room.findUnique({
+        where: {
+            id: booking.roomId
+        }
+    })
+    const result = {
+        id: booking.id,
+        room
+    }
+    return result
 }
 
 async function createUserBooking(userId:number, roomId:number){
@@ -45,7 +55,7 @@ async function createUserBooking(userId:number, roomId:number){
         return "usuário não tem ingresso do tipo presencial, com hospedagem e ingresso pago"
     }
 
-    const created = prisma.booking.create({
+    const created = await prisma.booking.create({
         data:{
             userId,
             roomId
@@ -84,7 +94,10 @@ async function editBooking(userId:number, roomId:number, bookingId:number){
             roomId
         }
     })
-    return "booking editado"
+    const result = {
+        bookingId: edited.id
+    }
+    return result
 }
 
 export const bookingRepository = {
