@@ -7,14 +7,15 @@ async function getUserBooking(userId:number){
             userId
         }
     });
-    const room = await prisma.room.findUnique({
+    if(!booking) return "usuário não tem reserva"
+    const Room = await prisma.room.findUnique({
         where: {
             id: booking.roomId
         }
     })
     const result = {
         id: booking.id,
-        room
+        Room
     }
     return result
 }
@@ -49,11 +50,12 @@ async function createUserBooking(userId:number, roomId:number){
             id: getTicketId.ticketTypeId
         }
     })
-    if(!getTicketId) return "usuário não presencial ou com hotel incluso"
-
     if(getTicketId.status !== "PAID" || getTicketType.includesHotel !== true || getTicketType.isRemote !== false){
         return "usuário não tem ingresso do tipo presencial, com hospedagem e ingresso pago"
     }
+    if(!getTicketId) return "usuário não presencial ou com hotel incluso"
+
+
 
     const created = await prisma.booking.create({
         data:{
@@ -61,7 +63,11 @@ async function createUserBooking(userId:number, roomId:number){
             roomId
         }
     })
-    return "reserva feita"
+
+    const result = {
+        bookingId: created.id
+    }
+    return result
 }
 
 async function editBooking(userId:number, roomId:number, bookingId:number){
@@ -84,7 +90,7 @@ async function editBooking(userId:number, roomId:number, bookingId:number){
             roomId
         }
     })
-    if(getRoomId.capacity < booking.length) return "sem vaga"
+    if(booking.length >= getRoomId.capacity) return "sem vaga"
 
     const edited = await prisma.booking.update({
         where:{
