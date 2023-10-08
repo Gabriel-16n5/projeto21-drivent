@@ -1,8 +1,10 @@
+import { notFoundError } from "../errors";
 import { bookingRepository } from "../repositories/booking-repository";
 
 
 async function getUserBooking(userId:number) {
     const result = await bookingRepository.getUserBooking(userId)
+    if(!result)throw notFoundError()
     return result;
 }
 
