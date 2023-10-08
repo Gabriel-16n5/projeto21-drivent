@@ -56,13 +56,27 @@ async function createUserBooking(userId:number, roomId:number){
 
 async function editBooking(userId:number, roomId:number, bookingId:number){
 
-    // const bookingId = await prisma.booking.findFirst({
-    //     where:{
-    //         userId
-    //     }
-    // })
+    const Getbooking = await prisma.booking.findUnique({
+        where:{
+            userId
+        }
+    })
+    if(!Getbooking) return "usuário não possui reserva"
 
-    return prisma.booking.update({
+    const getRoomId = await prisma.room.findUnique({
+        where: {
+            id: roomId
+        }
+    })
+    if(!getRoomId) return "quarto não existe"
+    const booking = await prisma.booking.findMany({
+        where: {
+            roomId
+        }
+    })
+    if(getRoomId.capacity < booking.length) return "sem vaga"
+
+    const edited = await prisma.booking.update({
         where:{
             id: bookingId
         },
@@ -70,6 +84,7 @@ async function editBooking(userId:number, roomId:number, bookingId:number){
             roomId
         }
     })
+    return "booking editado"
 }
 
 export const bookingRepository = {

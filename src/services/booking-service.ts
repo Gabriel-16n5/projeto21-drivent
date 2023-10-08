@@ -19,6 +19,10 @@ async function createUserBooking(userId:number, roomId:number) {
 
 async function editBooking(userId:number, roomId:number, bookingId:number){
     const result = await bookingRepository.editBooking(userId, roomId, bookingId)
+    if(result === "usuário não possui reserva") throw forbiddenError(result)
+    if(result === "quarto não existe") throw notFoundError()
+    if(result === "sem vaga") throw forbiddenError(result)
+    if(result !== "booking editado") throw forbiddenError("erro inesperado")
     return result
 }
 
