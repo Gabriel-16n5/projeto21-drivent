@@ -16,7 +16,6 @@ async function createUserBooking(userId:number, roomId:number) {
     if(result === "Reserva não paga") throw forbiddenError(result)
     if(result === "Hotel não incluso") throw forbiddenError(result)
     if(result === "Ticket Digital") throw forbiddenError(result)
-    if(!result) throw forbiddenError("erro inesperado");
     return result;
 }
 
