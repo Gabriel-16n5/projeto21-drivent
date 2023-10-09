@@ -32,7 +32,7 @@ async function createUserBooking(userId:number, roomId:number){
             roomId
         }
     })
-    if(getRoomId.capacity < booking.length) return "sem vaga"
+    if(booking.length >= getRoomId.capacity) return "sem vaga"
     const getEnrollmentId = await prisma.enrollment.findUnique({
         where: {
             userId
@@ -50,10 +50,9 @@ async function createUserBooking(userId:number, roomId:number){
             id: getTicketId.ticketTypeId
         }
     })
-    if(getTicketId.status !== "PAID" || getTicketType.includesHotel !== true || getTicketType.isRemote !== false){
-        return "usuário não tem ingresso do tipo presencial, com hospedagem e ingresso pago"
-    }
-    if(!getTicketId) return "usuário não presencial ou com hotel incluso"
+    if(getTicketId.status !== "PAID") return "Reserva não paga";
+    if(getTicketType.includesHotel === false) return "Hotel não incluso";
+    if(getTicketType.isRemote === true) return "Ticket Digital"
 
 
 

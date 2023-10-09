@@ -13,13 +13,15 @@ async function createUserBooking(userId:number, roomId:number) {
     const result = await bookingRepository.createUserBooking(userId, roomId);
     if(result === "quarto não existe") throw notFoundError()
     if(result === "sem vaga") throw forbiddenError(result)
+    if(result === "Reserva não paga") throw forbiddenError(result)
+    if(result === "Hotel não incluso") throw forbiddenError(result)
+    if(result === "Ticket Digital") throw forbiddenError(result)
     if(!result) throw forbiddenError("erro inesperado");
     return result;
 }
 
 async function editBooking(userId:number, roomId:number, bookingId:number){
     const result = await bookingRepository.editBooking(userId, roomId, bookingId)
-    if(result !== "sem vaga" && result !== "usuário não possui reserva" && result !== "quarto não existe") throw forbiddenError("usuário não tem ingresso do tipo presencial, com hospedagem e ingresso pago")
     if(result === "usuário não possui reserva") throw forbiddenError(result)
     if(result === "quarto não existe") throw notFoundError()
     if(result === "sem vaga") throw forbiddenError(result)
